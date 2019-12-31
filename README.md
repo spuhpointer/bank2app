@@ -40,7 +40,7 @@ $ sudo -s
 $ cat << EOF > /etc/nxagentd.conf
 
 # Log File
-LogFile=/var/log/nxagentd
+LogFile=/home/user1/projects/bank2app/log/nxagentd.log
 
 # IP white list, can contain multiple records separated by comma.
 # CIDR notation supported for subnets.
@@ -49,6 +49,8 @@ ServerConnection=testhost
 SubAgent=tuxedo.nsm
 
 EOF
+
+$ sudo chmod a+r /etc/nxagentd.conf
 ```
 
 add "testhost" in your /etc/hosts file to point your ip address, do not use 127.0.0.1, but some real network interface IP.
