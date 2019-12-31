@@ -12,6 +12,10 @@ Application consits of following binaries:
 
 The application is monitored by NetXMS monitoring suite. Program is installed for "user1" user.
 
+Application work flow is as follows:
+
+![Alt text](doc/img/app-flow.png?raw=true "App work flow")
+
 
 ## Getting up and running
 
