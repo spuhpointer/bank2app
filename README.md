@@ -14,3 +14,6 @@ Application consits of following binaries:
 - *creditsv* Go program, XATMI server, simulates transaction credit side.
 
 The application is monitored by NetXMS monitoring suite.
+
+
+# Getting up and running
