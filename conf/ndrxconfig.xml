@@ -134,7 +134,7 @@
 		<client cmdline="java -cp /usr/share/java/enduroxjava.jar:${NDRX_APPHOME}/bin/txuploadcl.jar Txuploadcl" subsectfrom="1" subsectto="50" >
 			<exec tag="TXUPLD" autostart="Y" log="${NDRX_APPHOME}/log/upload-${NDRX_CLTSUBSECT}.log"/>
 		</client>
-     		<client cmdline="/path/to/install/bin/nxagentd -D9 -c/etc/nxagentd.conf" log="/tmp/nxagentd.log">
+     		<client cmdline="/opt/nxagent/bin/nxagentd -D9 -c /etc/nxagentd.conf" log="${NDRX_APPHOME}/log/nxagentd.log">
                         <exec tag="NXAGENT" autostart="Y" />
                 </client>
 
