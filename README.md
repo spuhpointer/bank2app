@@ -141,3 +141,12 @@ NXAGENT/- - running pid 24802 (Tue Dec 31 17:40:18 2019)
 
 ```
 
+## NetXMS dashbord for running system
+
+The demo application is monitored by NetXMS suite, the Data collection items can be seen here: 
+
+- doc/NetXMS-DCI-Demo.csv
+
+Differnet configuration are possible, but for demo purposes following dashbord is created:
+
+![Alt text](doc/img/netxms-demo.png?raw=true "NetXMS Dashbord")
