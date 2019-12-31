@@ -10,7 +10,7 @@ Application consits of following binaries:
 - *debitsv* Java program (compiled into binary), XATMI server, performs simulation of transaction debit operation.
 - *creditsv* Go program, XATMI server, simulates transaction credit side.
 
-The application is monitored by NetXMS monitoring suite.
+The application is monitored by NetXMS monitoring suite. Program is installed for "user1" user.
 
 
 ## Getting up and running
@@ -29,6 +29,8 @@ $ ./reconf
 $ ./configure --with-agent --prefix=/opt/nxagent --with-tuxedo=/usr --disable-mqtt
 $ make
 $ sudo make install
+$ sudo chown -R user1:user1 /opt/nxagent
+
 ```
 
 After installing the binaries, needs to add the configuration for the agent:
@@ -64,4 +66,76 @@ $ git clone https://github.com/spuhpointer/bank2app
 
 Next update the Java JDK pathes in following files (so that build can complete):
 
+- /home/user1/projects/bank2app/src/debitsv/Makefile
+
+Next step is to build the whole solution:
+
+```
+$ cd /home/user1/projects/bank2app
+$ make
+```
+
+Once all is bulit we may start the app.
+
+### Provision and run
+
+Will use default settings for provisioning the runtime:
+
+```
+$ cd /home/user1/projects/bank2app
+$ xadmin provision -d
+```
+
+Change log levels before start, as there is very high tps set via many clients started:
+
+- Update: /home/user1/projects/bank2app/conf/app.ini
+
+Have something like this set:
+
+```
+[@debug]
+; * - goes for all binaries not listed bellow
+*= ndrx=2 ubf=1 tp=2 file=
+xadmin= ndrx=5 ubf=1 tp=5 file=${NDRX_APPHOME}/log/xadmin.log
+ndrxd= ndrx=5 ubf=1 tp=5 file=${NDRX_APPHOME}/log/ndrxd.log
+```
+
+- Update environment file to include library paths to JDK install, for example (added last line) to */home/user1/projects/bank2app/conf/settest1*:
+
+```
+$ cat settest1 
+#/bin/bash
+#
+# @(#) Load this script in environment
+#
+export NDRX_APPHOME=/home/user1/projects/bank2app
+export NDRX_CCONFIG=$NDRX_APPHOME/conf
+export PATH=$PATH:$NDRX_APPHOME/bin
+export CDPATH=$CDPATH:.:$NDRX_APPHOME
+export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server
+```
+
+boot the app:
+
+```
+$ cd /home/user1/projects/bank2app/conf
+$ source settest1
+$ xadmin start -y
+...
+exec cpmsrv -k 0myWI5nu -i 9999 -e /home/user1/projects/bank2app/log/cpmsrv.log -r -- -k3 -i1 --  :
+	process id=22731 ... Started.
+Startup finished. 105 processes started.
+NDRX 1> 
+```
+
+Check the status of clients:
+
+```
+$ xadmin pc
+...
+TXUPLD/49 - running pid 23817 (Tue Dec 31 17:38:41 2019)
+TXUPLD/50 - running pid 23818 (Tue Dec 31 17:38:41 2019)
+NXAGENT/- - running pid 24802 (Tue Dec 31 17:40:18 2019)
+
+```
 
