@@ -1,0 +1,39 @@
+
+JAVAC=javac
+SOURCEDIR=.
+SOURCES := $(wildcard *.fd)
+SOURCES += Exfields
+
+OUTPUT = $(addsuffix .java, $(basename $(SOURCES)))
+CLASS = $(addsuffix .class, $(basename $(SOURCES)))
+
+comma:= ,
+empty:=
+space:= $(empty) $(empty)
+
+export FIELDTBLS=$(subst $(space),$(comma),$(SOURCES))
+export FLDTBLDIR=$(shell pwd)
+unexport NDRX_CCONFIG
+
+$(info $$SOURCES is [${SOURCES}])
+$(info $$CLASS is [${CLASS}])
+$(info $$OUTPUT is [${OUTPUT}])
+$(info $$FIELDTBLS is [${FIELDTBLS}])
+
+PACKAGE=ubftab.jar
+
+%.java : $(SOURCES)
+	mkfldhdr -m2 $(SOURCES)
+
+%.class : %.java
+	$(JAVAC) $(basename $<).java
+
+$(PACKAGE) : $(CLASS)
+	@echo "Manifest-Version: 1.0" > manifest.txt
+	@echo "Class-Path: ." >> manifest.txt
+	jar -cmf manifest.txt ${PACKAGE} $(CLASS)
+	- rm manifest.txt
+
+.PHONY: clean
+clean:
+	- rm *.java *.class *.jar manifest.txt

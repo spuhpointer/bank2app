@@ -1,0 +1,19 @@
+
+$#ifndef __BANK_FD
+$#define __BANK_FD
+
+*base 6000
+
+
+TX_TYPE	        11	short	- 1 Transaction type
+TX_SRC_ACCOUNT	    	12	string	- 1 Source account number
+TX_DST_ACCOUNT	        21	string	- 1 Destination account number
+TX_AMOUNT		22	long   - 1 Tx amount
+TX_CURRENCY		31	string	- 1 Amount curency code
+TX_RESULT		32	long	- 1 Tx result
+TX_RESULT_MSG		41	string   - 1 Tx result msg
+TX_TEST_FLAG		42	short	- 1 Test flag 1 - this is test
+TX_ID		        43	string	- 1 Transaction id
+
+
+$#endif
